@@ -7,8 +7,32 @@ import { TaskType } from "@google/generative-ai";
 import { QdrantVectorStore } from "@langchain/qdrant";
 
 export async function POST(request: NextRequest) {
-  const { messages, provider }: { messages: UIMessage[]; provider: string } =
+  const {
+    messages,
+    provider,
+    userId,
+  }: { messages: UIMessage[]; provider: string; userId: string } =
     await request.json();
+
+  // Check message limit
+  const limitResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/message-limit?userId=${userId}`,
+    {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    },
+  );
+
+  const limitData = await limitResponse.json();
+  if (!limitData.canSend) {
+    return new Response(
+      JSON.stringify({ error: "Daily message limit reached" }),
+      {
+        status: 429,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
+  }
 
   // Get the latest user message text
   const lastUserMessage = messages[messages.length - 1];
@@ -30,8 +54,8 @@ export async function POST(request: NextRequest) {
     embeddings,
     {
       url: process.env.QDRANT_URL,
-      collectionName: "notevanta",
-    }
+      collectionName: `notevanta_${userId}`,
+    },
   );
 
   const vectoreRetriever = vectorStore.asRetriever({
@@ -39,6 +63,8 @@ export async function POST(request: NextRequest) {
   });
 
   const relevantDocs = await vectoreRetriever.invoke(userQuery);
+
+  // console.log(relevantDocs)
 
   const SYSTEM_PROMPT = `
         You are a helpfull AI Assistant who asnweres user query based on the available context

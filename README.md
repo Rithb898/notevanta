@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NoteVanta
+
+An AI-powered document chat application that allows you to upload documents and websites, then have intelligent conversations about their content using multiple AI models.
+
+## Features
+
+- **Document Upload**: Support for PDF, text, and CSV files
+- **Website Integration**: Single page or full website crawling
+- **Multi-AI Support**: Choose between OpenAI and Gemini models
+- **Real-time Chat**: Interactive conversations with your documents
+- **User Authentication**: Secure Firebase authentication
+- **Document Management**: View and delete uploaded sources
+- **Dark/Light Theme**: Toggle between themes
+
+## Tech Stack
+
+- **Framework**: Next.js 15 with App Router
+- **UI**: React 19, Tailwind CSS, Radix UI
+- **AI**: LangChain, AI SDK, Google Generative AI
+- **Database**: Firebase Firestore
+- **Vector Store**: Qdrant
+- **Authentication**: Firebase Auth
+- **Styling**: Tailwind CSS with shadcn/ui components
 
 ## Getting Started
 
-First, run the development server:
+1. **Install dependencies**:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Set up environment variables**:
+   Create a `.env.local` file with your API keys and configuration.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Run the development server**:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pnpm dev
+```
 
-## Learn More
+4. **Open your browser**:
+   Navigate to [http://localhost:3000](http://localhost:3000)
 
-To learn more about Next.js, take a look at the following resources:
+## Usage
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Authentication**: Sign in with Google to access the application
+2. **Upload Documents**: Drag and drop PDFs, text files, or CSV files
+3. **Add Websites**: Enter URLs for single page or full website indexing
+4. **Chat**: Ask questions about your uploaded content using AI models
+5. **Manage Sources**: View and delete your uploaded documents
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+```
+app/
+├── api/          # API routes for chat, documents, indexing
+├── chat/         # Main chat interface
+└── page.tsx      # Home page
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+components/
+├── panels/       # ChatPanel and SourcePanel components
+├── ui/           # Reusable UI components
+└── LoginDialog.tsx
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+hooks/
+└── useAuth.ts    # Authentication hook
+
+lib/
+├── firebase.ts   # Firebase configuration
+└── utils.ts      # Utility functions
+```
