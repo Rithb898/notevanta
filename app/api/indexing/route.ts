@@ -47,6 +47,7 @@ export async function POST(request: NextRequest) {
         const compiledConvert = compile({ wordwrap: 130 });
         const loader = new RecursiveUrlLoader(url, {
           extractor: compiledConvert,
+          maxDepth: 2,
           excludeDirs: ["/api/", "/admin/"],
         });
         docs = await loader.load();
@@ -58,7 +59,7 @@ export async function POST(request: NextRequest) {
       // Handle file
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      const tempPath = path.join(process.cwd(), "temp", file.name);
+      const tempPath = path.join("/tmp", file.name);
       await writeFile(tempPath, buffer);
 
       let loader;
