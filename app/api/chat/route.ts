@@ -15,8 +15,12 @@ export async function POST(request: NextRequest) {
     await request.json();
 
   // Check message limit
+  const baseUrl = process.env.VERCEL_URL 
+    ? `https://${process.env.VERCEL_URL}` 
+    : process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  
   const limitResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/message-limit?userId=${userId}`,
+    `${baseUrl}/api/message-limit?userId=${userId}`,
     {
       method: "GET",
       headers: { "Content-Type": "application/json" },
