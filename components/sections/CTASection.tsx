@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import { ArrowRight, CheckCircle, Mail } from "lucide-react";
-import Link from "next/link";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 
@@ -108,7 +107,7 @@ const CTASection = () => {
               >
                 <CheckCircle className="mr-2 h-5 w-5" />
                 <span className="font-medium">
-                  Thank you! We'll be in touch soon.
+                  Thank you! We&apos;ll be in touch soon.
                 </span>
               </motion.div>
             )}

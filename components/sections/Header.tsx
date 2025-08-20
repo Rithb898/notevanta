@@ -4,8 +4,7 @@ import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { Brain, File, FileSearch, Menu, X } from "lucide-react";
-import Image from "next/image";
+import { Brain, Menu, X } from "lucide-react";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -41,7 +40,7 @@ const Header = () => {
           >
             <Brain className="text-primary mr-2 h-8 w-8" />
             <div className="text-primary text-2xl font-bold">
-              Note<span className="text-primary/70">Vanta</span>
+              Note<span className="text-accent-foreground/75">Vanta</span>
             </div>
           </motion.div>
           </Link>

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import { Brain } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -8,8 +9,9 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col items-center justify-center">
           <div className="mb-4 text-center">
-            <div className="text-foreground text-2xl font-bold">
-              Note<span className="text-muted-foreground">Vanta</span>
+            <Brain className="text-primary mr-2 h-8 w-8" />
+            <div className="text-primary text-2xl font-bold">
+              Note<span className="text-accent-foreground/75">Vanta</span>
             </div>
             <p className="text-muted-foreground mt-2 text-sm">
               Revolutionizing research with AI-powered note-taking

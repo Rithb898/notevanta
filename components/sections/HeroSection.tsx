@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import { ArrowRight, Globe, MessageSquare, Upload } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";

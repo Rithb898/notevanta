@@ -370,8 +370,7 @@ const ChatPanel = () => {
                               key={index}
                               remarkPlugins={[remarkGfm]}
                               components={{
-                                code(props: any) {
-                                  // eslint-disable-line @typescript-eslint/no-explicit-any
+                                code(props: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
                                   const { className, children } = props;
                                   const match = /language-(\w+)/.exec(
                                     className || "",
