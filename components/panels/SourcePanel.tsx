@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import {
   FileText,
@@ -7,10 +7,6 @@ import {
   Sun,
   Moon,
   LogOut,
-  UploadCloud,
-  UploadCloudIcon,
-  DownloadCloud,
-  Download,
   CloudUpload,
 } from "lucide-react";
 import { Separator } from "../ui/separator";
@@ -27,9 +23,6 @@ import { useAuth } from "@/hooks/useAuth";
 import {
   collection,
   addDoc,
-  query,
-  where,
-  getDocs,
   deleteDoc,
   doc,
 } from "firebase/firestore";
@@ -47,15 +40,16 @@ interface Document {
 const SourcesPanel = () => {
   const { theme, setTheme } = useTheme();
   const { user, logout } = useAuth();
-  const [files, setFiles] = useState<File[]>([]);
+  const [, setFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
   const [textContent, setTextContent] = useState("");
   const [documents, setDocuments] = useState<Document[]>([]);
   const [urlContent, setUrlContent] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [tab, setTab] = useState("document");
 
-  const fetchDocuments = async () => {
+  const fetchDocuments = useCallback(async () => {
     if (!user) return;
     try {
       const response = await fetch(`/api/documents?userId=${user.uid}`);
@@ -66,11 +60,11 @@ const SourcesPanel = () => {
     } catch (error) {
       console.error("Error fetching documents:", error);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     fetchDocuments();
-  }, [user, loading]);
+  }, [user, loading, fetchDocuments]);
 
   useEffect(() => {
     if (error || success) {
@@ -246,7 +240,7 @@ const SourcesPanel = () => {
     <Card className="h-full">
       <CardHeader>
         <div className="flex items-center justify-between">
-          <div className="scroll-m-20 text-center text-3xl font-extrabold tracking-tight text-balance">
+          <div className="scroll-m-20 text-center text-3xl font-extrabold tracking-tight text-balance text-primary">
             NoteVanta
           </div>
           <div className="flex items-center gap-3">
@@ -269,10 +263,18 @@ const SourcesPanel = () => {
       <CardContent>
         <Tabs defaultValue="document">
           <TabsList className="w-full">
-            <TabsTrigger value="document" className="cursor-pointer">
+            <TabsTrigger
+              value="document"
+              className="cursor-pointer font-bold"
+              onClick={() => setTab("document")}
+            >
               Document
             </TabsTrigger>
-            <TabsTrigger value="website" className="cursor-pointer">
+            <TabsTrigger
+              value="website"
+              className="cursor-pointer font-bold"
+              onClick={() => setTab("website")}
+            >
               Website
             </TabsTrigger>
           </TabsList>
@@ -391,11 +393,14 @@ const SourcesPanel = () => {
               </CardContent>
             </Card>
           </TabsContent>
-          <Card className="h-72">
-            <CardHeader className="scroll-m-20 text-2xl font-bold tracking-tight first:mt-0">
+          <Card className={`${tab === "document" ? "h-72" : "h-[545px]"}`}>
+            <CardHeader className="scroll-m-20 text-2xl font-extrabold tracking-tight first:mt-0 text-primary">
               Source Lists
             </CardHeader>
-            <CardContent className="-mt-5 h-48">
+            {/* <CardContent className="-mt-5 h-48"> */}
+            <CardContent
+              className={`-mt-5 ${tab === "document" ? "h-48" : "h-[545px]"}`}
+            >
               <ScrollArea className="h-full">
                 {documents.length === 0 ? (
                   <div className="text-muted-foreground py-8 text-center">

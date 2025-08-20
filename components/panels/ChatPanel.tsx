@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useRef, useMemo } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import {
   Select,
@@ -16,6 +16,7 @@ import {
   History,
   User,
   Trash2,
+  Loader2,
 } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { Textarea } from "../ui/textarea";
@@ -69,13 +70,11 @@ const ChatPanel = () => {
     dailyLimit,
     canSendMessage,
     loading: limitLoading,
-    refreshCount,
     incrementMessageCount,
   } = useMessageLimit(user?.uid || null);
   const {
     chatHistory,
     loading: historyLoading,
-    saveChat,
     createNewChat,
     updateCurrentChat,
     loadChat,
@@ -116,7 +115,7 @@ const ChatPanel = () => {
       console.log("Updating existing chat");
       updateCurrentChat(messages);
     }
-  }, [messages.length, currentChatId, user]);
+  }, [messages, currentChatId, user, createNewChat, updateCurrentChat]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -340,9 +339,9 @@ const ChatPanel = () => {
                     Welcome to NoteVanta AI Assistant
                   </h3>
                   <p className="text-muted-foreground">
-                    I'm here to help you with your questions and tasks. You can
-                    choose between OpenAI and Gemini models using the dropdown
-                    menu above.
+                    I&apos;m here to help you with your questions and tasks. You
+                    can choose between OpenAI and Gemini models using the
+                    dropdown menu above.
                   </p>
                 </div>
               </div>
@@ -371,12 +370,9 @@ const ChatPanel = () => {
                               key={index}
                               remarkPlugins={[remarkGfm]}
                               components={{
-                                code({
-                                  node,
-                                  className,
-                                  children,
-                                  ...props
-                                }: any) {
+                                code(props: any) {
+                                  // eslint-disable-line @typescript-eslint/no-explicit-any
+                                  const { className, children } = props;
                                   const match = /language-(\w+)/.exec(
                                     className || "",
                                   );
@@ -474,12 +470,12 @@ const ChatPanel = () => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="max-h-[120px] min-h-[40px] flex-1 resize-none"
+            className="max-h-[90px] min-h-[60px] flex-1 resize-none"
             disabled={status === "streaming" || !user || !canSendMessage}
           />
           {status === "streaming" ? (
             <Button onClick={handleStop} variant="outline" size="sm">
-              Stop
+              <Loader2 />
             </Button>
           ) : (
             <Button

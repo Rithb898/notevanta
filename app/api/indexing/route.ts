@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    let docs: Document[];
+    let docs: Document[] = [];
 
     if (url) {
       // Handle URL

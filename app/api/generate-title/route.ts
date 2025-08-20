@@ -4,7 +4,7 @@ import { generateText } from "ai";
 
 export async function POST(request: NextRequest) {
   try {
-    const { messages } = await request.json();
+    const { messages }: { messages: Array<{ role: string; parts: Array<{ text: string }> }> } = await request.json();
 
     if (!messages || messages.length === 0) {
       return NextResponse.json(
@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     }
 
     const firstUserMessage =
-      messages.find((msg: any) => msg.role === "user")?.parts?.[0]?.text || "";
+      messages.find((msg) => msg.role === "user")?.parts?.[0]?.text || "";
 
     const { text } = await generateText({
       model: google("gemini-2.5-flash-lite"),
