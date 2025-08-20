@@ -49,7 +49,7 @@ An AI-powered document chat application that allows you to upload documents and 
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/Rithb898/notevanta
 cd notevanta
 
 # Install dependencies
