@@ -5,6 +5,8 @@ import { google } from "@ai-sdk/google";
 import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import { TaskType } from "@google/generative-ai";
 import { QdrantVectorStore } from "@langchain/qdrant";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 export async function POST(request: NextRequest) {
   const {
@@ -14,21 +16,13 @@ export async function POST(request: NextRequest) {
   }: { messages: UIMessage[]; provider: string; userId: string } =
     await request.json();
 
-  // Check message limit
-  const baseUrl = process.env.VERCEL_URL 
-    ? `https://${process.env.VERCEL_URL}` 
-    : process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  // Check message limit directly
+  const today = new Date().toISOString().split('T')[0];
+  const docRef = doc(db, "messageUsage", `${userId}_${today}`);
+  const docSnap = await getDoc(docRef);
+  const messageCount = docSnap.exists() ? docSnap.data().count || 0 : 0;
   
-  const limitResponse = await fetch(
-    `${baseUrl}/api/message-limit?userId=${userId}`,
-    {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    },
-  );
-
-  const limitData = await limitResponse.json();
-  if (!limitData.canSend) {
+  if (messageCount >= 10) {
     return new Response(
       JSON.stringify({ error: "Daily message limit reached" }),
       {

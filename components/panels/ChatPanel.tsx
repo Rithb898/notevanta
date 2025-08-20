@@ -357,7 +357,7 @@ const ChatPanel = () => {
                     className={`${
                       message.role === "user"
                         ? "bg-primary text-primary-foreground"
-                        : "bg-muted"
+                        : "bg-accent"
                     } max-w-[80%] rounded-lg p-3 break-words`}
                   >
                     <div className="text-sm">
