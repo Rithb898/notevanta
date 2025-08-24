@@ -24,7 +24,7 @@ An AI-powered document chat application that allows you to upload documents and 
 
 - **Framework**: Next.js 15 with App Router and Turbopack
 - **UI**: React 19, Tailwind CSS 4, Radix UI, shadcn/ui components
-- **AI**: LangChain, AI SDK, Google Generative AI, Groq
+- **AI**: LangChain, AI SDK, Google Generative AI, OpenAI
 - **Database**: Firebase Firestore
 - **Vector Store**: Qdrant
 - **Authentication**: Firebase Auth with Google Provider
